@@ -2,7 +2,7 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
+//const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 const askLLM = async (prompt) => {
   try {
@@ -15,7 +15,7 @@ const askLLM = async (prompt) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${GROQ_API_KEY}`,
+          //Authorization: `Bearer ${GROQ_API_KEY}`,
         },
       }
     );
