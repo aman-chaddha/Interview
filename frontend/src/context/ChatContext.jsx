@@ -6,6 +6,8 @@ const initialState = {
   messages: [],
   loading: false,
   userInput: "",
+  sessions: [],
+  currentSessionId: null
 };
 
 function chatReducer(state, action) {
@@ -18,6 +20,12 @@ function chatReducer(state, action) {
       return { ...state, messages: [...state.messages, action.payload] };
     case "RESET_INPUT":
       return { ...state, userInput: "" };
+    case "SET_SESSIONS":
+      return { ...state, sessions: action.payload };
+    case "SET_SESSION_ID":
+      return { ...state, currentSessionId: action.payload };
+    case "SET_MESSAGES":
+      return { ...state, messages: action.payload };
     default:
       return state;
   }
