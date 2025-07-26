@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useChat } from "../context/ChatContext";
 
 const UserInput = ({ onSend }) => {
-  const [input, setInput] = useState("");
+  const { state, dispatch } = useChat();
 
   const handleSend = () => {
-    if (input.trim()) {
-      onSend(input);
-      setInput("");
+    if (state.userInput.trim()) {
+      onSend(state.userInput);
+      dispatch({ type: "RESET_INPUT" });
     }
   };
 
@@ -18,14 +18,14 @@ const UserInput = ({ onSend }) => {
     <div style={{ display: "flex", padding: "10px", borderTop: "1px solid #ddd" }}>
       <input
         type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={state.userInput}
+        onChange={(e) => dispatch({ type: "SET_INPUT", payload: e.target.value })}
         onKeyDown={handleKeyDown}
+        placeholder="Ask something..."
         style={{ flex: 1, padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
-        placeholder="Ask your question..."
       />
       <button onClick={handleSend} style={{ marginLeft: "10px", padding: "10px 20px" }}>
-        Send
+        {state.loading ? "..." : "Send"}
       </button>
     </div>
   );

@@ -1,15 +1,16 @@
-import { useState } from "react";
 import axios from "axios";
 import MessageList from "./MessageList";
 import UserInput from "./UserInput";
+import { useChat } from "../context/ChatContext";
+import { useState } from "react";
 
 const ChatWindow = () => {
-  const [messages, setMessages] = useState([]);
+  const { state, dispatch } = useChat();
   const [conversationId, setConversationId] = useState(null);
 
   const handleSend = async (text) => {
-    const userMsg = { sender: "user", message: text };
-    setMessages((prev) => [...prev, userMsg]);
+    dispatch({ type: "ADD_MESSAGE", payload: { sender: "user", message: text } });
+    dispatch({ type: "SET_LOADING", payload: true });
 
     try {
       const res = await axios.post("http://localhost:5000/api/chat", {
@@ -23,9 +24,11 @@ const ChatWindow = () => {
       };
 
       setConversationId(res.data.session_id);
-      setMessages((prev) => [...prev, aiMsg]);
+      dispatch({ type: "ADD_MESSAGE", payload: aiMsg });
     } catch (err) {
-      console.error("Chat Error:", err);
+      console.error("Error:", err);
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
@@ -42,7 +45,7 @@ const ChatWindow = () => {
       }}
     >
       <h2 style={{ textAlign: "center", margin: "10px 0" }}>🛍️ E-Commerce Chatbot</h2>
-      <MessageList messages={messages} />
+      <MessageList messages={state.messages} />
       <UserInput onSend={handleSend} />
     </div>
   );
