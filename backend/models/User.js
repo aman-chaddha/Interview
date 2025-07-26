@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
     password: String,
     address: String,
     phone: String,
+    session:[{ type: mongoose.Schema.Types.ObjectId, ref: "Session" }],
 });
 
 module.exports = mongoose.model("User", UserSchema);
